@@ -10,7 +10,7 @@ resolution = [800,540]
 
 screen = pygame.display.set_mode(resolution)
 clock = pygame.time.Clock()
-font = pygame.font.Font("freesansbold.ttf", 32)
+font = pygame.font.Font("freesansbold.ttf", 16)
 
 GameRunning = True
 
@@ -24,7 +24,7 @@ class CirclePing:
         self.radius = 0
         self.inner_radius = 0
 
-        self.max_radius = 300
+        self.max_radius = 200
 
     def isAlive(self):
         if self.radius >= self.max_radius and self.inner_radius >= self.max_radius:
@@ -33,10 +33,10 @@ class CirclePing:
 
     def update(self):
         if self.radius < self.max_radius:
-            self.radius += 10
+            self.radius += 4
 
-        if self.radius >= self.max_radius * .75:
-            self.inner_radius += 11
+        if self.radius >= self.max_radius * .85:
+            self.inner_radius += 10
         
     def draw(self, screen):
         pygame.draw.circle(screen, pygame.Color(128, 128, 128), self.pos, self.radius)
@@ -64,9 +64,21 @@ def SpawnItem():
 for i in range(12):
     SpawnItem()
 
+def ShowInstructions(screen):
+    text = font.render("Click on the screen to have the blind girl tap on it with her walking stick", False, pygame.Color(255, 255, 255))
+    text_height = text.get_height()
+    screen.blit(text, [10,20])
+    text = font.render("Press ESC to quit", False, pygame.Color(255, 255, 255))
+    screen.blit(text, [10,20 + text_height])
+
+IsInstructionsVisible = True
+
 while GameRunning:
     screen.fill(pygame.Color(0,0,0))
     #screen.blit(background, [0,0])
+
+    if IsInstructionsVisible:
+        ShowInstructions(screen)
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -83,9 +95,8 @@ while GameRunning:
     mouse_pressed = pygame.mouse.get_pressed()
 
     if mouse_pressed[0] and not prev_mouse_pressed[0]:
-        #text = font.render("test", False, pygame.Color(255, 255, 255))
-        #screen.blit(text, [0,0])
         CirclePingCollection.append(CirclePing(mouse_pos))
+        IsInstructionsVisible = False
 
     for Circle in CirclePingCollection:
         Circle.update()
