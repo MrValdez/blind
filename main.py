@@ -22,17 +22,25 @@ class CirclePing:
     def __init__(self, pos):
         self.pos = pos
         self.radius = 0
+        self.inner_radius = 0
+
+        self.max_radius = 300
 
     def isAlive(self):
-        if self.radius > 300:
+        if self.radius >= self.max_radius and self.inner_radius >= self.max_radius:
             return False
         return True
 
     def update(self):
-        self.radius += 10
+        if self.radius < self.max_radius:
+            self.radius += 10
 
+        if self.radius >= self.max_radius * .75:
+            self.inner_radius += 11
+        
     def draw(self, screen):
         pygame.draw.circle(screen, pygame.Color(128, 128, 128), self.pos, self.radius)
+        pygame.draw.circle(screen, pygame.Color(0, 0, 0), self.pos, self.inner_radius)
 
 class Items:
     def __init__(self, min_pos, max_pos):        
@@ -87,9 +95,10 @@ while GameRunning:
         for Circle in CirclePingCollection:
             def IsInside(Circle, Item):
                 origin = [Circle.pos[0] - Item.pos[0], Circle.pos[1] - Item.pos[1]]
-                distance = origin[0] * origin[0] + origin[1] * origin[1]
+                distance = origin[0] * origin[0] + origin[1] * origin[1]                
                 distance = math.sqrt(distance)
-                if distance < Circle.radius:
+
+                if distance <= Circle.radius and distance >= Circle.inner_radius:
                     return True
                 
                 return False
