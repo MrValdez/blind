@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 pygame.init()
 pygame.display.set_caption ("Blind Girl prototype")
@@ -83,7 +84,18 @@ while GameRunning:
         Circle.draw(screen)
 
     for Item in ItemCollection:
-        Item.draw(screen)
+        for Circle in CirclePingCollection:
+            def IsInside(Circle, Item):
+                origin = [Circle.pos[0] - Item.pos[0], Circle.pos[1] - Item.pos[1]]
+                distance = origin[0] * origin[0] + origin[1] * origin[1]
+                distance = math.sqrt(distance)
+                if distance < Circle.radius:
+                    return True
+                
+                return False
+                
+            if IsInside(Circle, Item):
+                Item.draw(screen)
 
     for Circle in CirclePingCollection:
         if not Circle.isAlive():
