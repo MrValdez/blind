@@ -28,7 +28,7 @@ class CirclePing:
         return True
 
     def update(self):
-        self.radius += 1
+        self.radius += 10
 
     def draw(self, screen):
         pygame.draw.circle(screen, pygame.Color(128, 128, 128), self.pos, self.radius)
