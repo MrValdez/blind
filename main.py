@@ -16,7 +16,7 @@ GameRunning = True
 
 mouse_pressed = pygame.mouse.get_pressed()    
 
-background = pygame.image.load("background.png")
+#background = pygame.image.load("background.png")
 
 class CirclePing:
     def __init__(self, pos):
@@ -65,8 +65,8 @@ for i in range(12):
     SpawnItem()
 
 while GameRunning:
-    #screen.fill(pygame.Color(0,0,0))
-    screen.blit(background, [0,0])
+    screen.fill(pygame.Color(0,0,0))
+    #screen.blit(background, [0,0])
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -83,8 +83,8 @@ while GameRunning:
     mouse_pressed = pygame.mouse.get_pressed()
 
     if mouse_pressed[0] and not prev_mouse_pressed[0]:
-        text = font.render("test", False, pygame.Color(255, 255, 255))
-        screen.blit(text, [0,0])
+        #text = font.render("test", False, pygame.Color(255, 255, 255))
+        #screen.blit(text, [0,0])
         CirclePingCollection.append(CirclePing(mouse_pos))
 
     for Circle in CirclePingCollection:
