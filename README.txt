@@ -1,6 +1,8 @@
 Rapid prototype for "blind girl" gameplay
 
+Done in 2 hours while waiting for my students to finish their exams.
 
+Requires pygame.
 
 
 The following are cc licensed art used in this prototype:

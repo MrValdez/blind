@@ -8,7 +8,7 @@ pygame.mouse.set_visible(True)
 
 resolution = [800,540]
 
-screen = pygame.display.set_mode(resolution)
+screen = pygame.display.set_mode(resolution, pygame.DOUBLEBUF)
 clock = pygame.time.Clock()
 font = pygame.font.Font("freesansbold.ttf", 16)
 
@@ -50,9 +50,25 @@ class Items:
         images = ["Bee_Spring_2010", "Daisy_colored_01", "Daisy_colored_02"]
         self.image = pygame.image.load(random.choice(images) + ".png")
         self.image = pygame.transform.rotozoom(self.image, 0, 0.15)
+        self.image.convert_alpha()
+
+        self.alpha = 0
+        self.visible = False
+
+    def found(self):
+        self.alpha = 255
+        self.visible = True
+
+    def update(self):
+        self.alpha -= 10
+        #if self.alpha <= 0:
+            #self.visible = False
         
     def draw(self, screen):
-        screen.blit(self.image, self.pos)
+        if self.visible:
+            self.image.set_alpha(self.alpha)
+            screen.blit(self.image, self.pos, special_flags = pygame.BLEND_RGBA_ADD)
+            #screen.blit(self.image, self.pos)
 
 CirclePingCollection = []
 ItemCollection = []
@@ -115,7 +131,11 @@ while GameRunning:
                 return False
                 
             if IsInside(Circle, Item):
-                Item.draw(screen)
+                Item.found()
+
+    for Item in ItemCollection:
+        Item.update()
+        Item.draw(screen)
 
     for Circle in CirclePingCollection:
         if not Circle.isAlive():
